@@ -5,7 +5,6 @@ const debounce = require('lodash.debounce');
 import { fetchCountries } from './fetchCountries.js';
 
 const DEBOUNCE_DELAY = 300;
-let markup = '';
 
 const refs = {
   input: document.querySelector('#search-box'),
@@ -38,11 +37,15 @@ const makeCountryInfo = item => {
   refs.countryInfo.innerHTML = markup;
 };
 
+const clearData = () => {
+  refs.countryInfo.innerHTML = '';
+  refs.list.innerHTML = '';
+}
+
 const onInputClick = () => {
   const name = refs.input.value.trim();
   if (name.length === 0) {
-    refs.countryInfo.innerHTML = '';
-    refs.list.innerHTML = '';
+    clearData();
     return;
   }
   else {
@@ -64,11 +67,13 @@ const onInputClick = () => {
       }
 
       if (data.length > 10) {
+        clearData();
         Notiflix.Notify.info("Too many matches found. Please enter a more specific name.");
         return;
       }
 
       if (data.status === 404) {
+        clearData();
         Notiflix.Notify.failure("Oops, there is no country with that name.");
         return;
       }
