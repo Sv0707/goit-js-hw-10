@@ -1,6 +1,6 @@
 import '/css/styles.css';
 import Notiflix from 'notiflix';
-const debounce = require('lodash.debounce');
+import debounce from 'lodash.debounce';
 
 import { fetchCountries } from './fetchCountries.js';
 
@@ -42,7 +42,7 @@ const clearData = () => {
   refs.list.innerHTML = '';
 }
 
-const onInputClick = () => {
+const inputClick = () => {
   const name = refs.input.value.trim();
   if (name.length === 0) {
     clearData();
@@ -51,7 +51,7 @@ const onInputClick = () => {
   else {
     fetchCountries(name)
     .then(data => {
-      if (data.length > 1 && data.length < 10) {
+      if (data.length > 1 && data.length <= 10) {
         if (refs.countryInfo.textContent.length > 1) {
           refs.countryInfo.textContent = '';
         };
@@ -83,4 +83,4 @@ const onInputClick = () => {
 
 };
 
-refs.input.addEventListener('input', debounce(onInputClick, DEBOUNCE_DELAY));
+refs.input.addEventListener('input', debounce(inputClick, DEBOUNCE_DELAY));
